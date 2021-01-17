@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -54,6 +55,11 @@ public class User implements Serializable {
     @JoinColumn(name = "user_role", referencedColumnName = "role_name")})
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
+    
+    @OneToMany
+    private List<Dog> dogList = new ArrayList<>();
+    
+    
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {

@@ -7,8 +7,13 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
+import entities.Dog;
 import entities.Searches;
+import entities.User;
+import errorhandling.API_Exception;
 import facades.DogFacade;
 import fetch.BreedFetcher;
 import fetch.BreedImageFetcher;
@@ -25,10 +30,14 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import static rest.UserResource.USER_FACADE;
+import security.errorhandling.AuthenticationException;
 import utils.EMF_Creator;
 import utils.HttpUtils;
 
@@ -52,6 +61,36 @@ public class DogResource {
      * Creates a new instance of BreedResource
      */
     public DogResource() {
+    }
+    
+    
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/add")
+    public Response addDog(String jsonString) throws AuthenticationException, API_Exception {
+        String name;
+        String dateOfBirth;
+        String info;
+        String breed;
+        try {
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            dateOfBirth = json.get("dob").getAsString();
+            info = json.get("info").getAsString();
+            breed = json.get("breed").getAsString();
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        Dog dog = FACADE.addDog(name, dateOfBirth, info, breed);
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("name", name);
+        responseJson.addProperty("msg", "Welcome on board!");
+
+        return Response.ok(new Gson().toJson(responseJson)).build();
+
     }
 
     /**

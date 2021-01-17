@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 import dto.BreedDTO;
+import entities.Dog;
 import entities.Searches;
 import fetch.BreedFetcher;
 import fetch.BreedImageFetcher;
@@ -17,6 +18,7 @@ import fetch.FactsFetcher;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,8 +37,9 @@ public class DogFacade {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final ExecutorService threadPool = HttpUtils.getThreadPool();
 
-    private DogFacade(){
-}
+    private DogFacade() {
+    }
+
     public static DogFacade getDogFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -46,8 +49,7 @@ public class DogFacade {
         return instance;
 
     }
-    
-    
+
     public JSONObject getDog(String breed) throws MalformedURLException, IOException, ParseException {
         EntityManager em = emf.createEntityManager();
 
@@ -64,6 +66,7 @@ public class DogFacade {
         } finally {
             em.close();
         }
+        //List list = new ArrayList();
 
         Object fact = facts.get("facts");
 
@@ -74,4 +77,20 @@ public class DogFacade {
 
     }
 
+    public Dog addDog(String name, String dateOfBirth, String info, String breed) {
+        EntityManager em = emf.createEntityManager();
+        Dog dog;
+        try {
+            dog = new Dog(name, dateOfBirth, info, breed);
+            //dog.addUser(em.find(User.class, "user"));
+            em.getTransaction().begin();
+            em.persist(dog);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+        return dog;
+
+    }
 }

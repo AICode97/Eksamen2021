@@ -31,8 +31,8 @@ public class Dog implements Serializable {
     
     
 
-    public Dog(Long id, String name, String dateOfBirth, String info, String breed) {
-        this.id = id;
+    public Dog( String name, String dateOfBirth, String info, String breed) {
+        
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.info = info;
