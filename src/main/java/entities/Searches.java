@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,53 +17,42 @@ import javax.persistence.Id;
  * @author Bruger
  */
 @Entity
-public class Dog implements Serializable {
+
+public class Searches implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String dateOfBirth;
-    private String info;
-    private String breed;
-
-   
     
-    
+    Date dateTime;
+    String breedName;
 
-    public Dog(Long id, String name, String dateOfBirth, String info, String breed) {
+    public Searches() {
+    }
+
+    public Searches(String breedName) {
         this.id = id;
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.info = info;
-        this.breed = breed;
+        dateTime = new Date();
+        this.breedName = breedName;
     }
 
-    public Dog() {
+    public Date getDate() {
+        return dateTime;
     }
 
-    
-    
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void setDate(String date) {
+        this.dateTime = dateTime;
     }
 
     public String getName() {
-        return name;
+        return breedName;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+    public void setName(String breedName) {
+        this.breedName = breedName;
     }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
+    
     
     
     
@@ -76,5 +66,4 @@ public class Dog implements Serializable {
     }
 
    
-    
 }
