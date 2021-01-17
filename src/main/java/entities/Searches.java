@@ -32,7 +32,7 @@ public class Searches implements Serializable {
     }
 
     public Searches(String breedName) {
-        this.id = id;
+      
         dateTime = new Date();
         this.breedName = breedName;
     }
@@ -42,7 +42,7 @@ public class Searches implements Serializable {
     }
 
     public void setDate(String date) {
-        this.dateTime = dateTime;
+        this.dateTime = new Date();
     }
 
     public String getName() {

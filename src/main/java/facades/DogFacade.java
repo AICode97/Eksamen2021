@@ -29,37 +29,49 @@ import utils.HttpUtils;
  * @author Bruger
  */
 public class DogFacade {
+
     private static EntityManagerFactory emf;
     private static DogFacade instance;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final ExecutorService threadPool = HttpUtils.getThreadPool();
+
+    private DogFacade(){
+}
+    public static DogFacade getDogFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new DogFacade();
+
+        }
+        return instance;
+
+    }
     
     
     public JSONObject getDog(String breed) throws MalformedURLException, IOException, ParseException {
-       // EntityManager em = emf.createEntityManager();
-        
+        EntityManager em = emf.createEntityManager();
+
         JSONObject obj = BreedFetcher.getBreedByName(breed);
         JSONObject facts = FactsFetcher.getFact();
         JSONObject img = BreedImageFetcher.getBreedImage(breed);
-        //Searches search = new Searches(breed);
-        
-      /* em.getTransaction().begin();
-       em.persist(search);
-       em.getTransaction().commit();*/
-        
-        
-        
-        
-        
+        Searches search = new Searches(breed);
+
+        try {
+            em.getTransaction().begin();
+            em.persist(search);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+
         Object fact = facts.get("facts");
-        
-        
+
         obj.put("fact", fact);
         obj.put("img", img.get("image"));
 
         return obj;
 
     }
-  
-     
+
 }

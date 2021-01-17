@@ -8,6 +8,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
+import entities.Searches;
 import facades.DogFacade;
 import fetch.BreedFetcher;
 import fetch.BreedImageFetcher;
@@ -17,6 +18,7 @@ import fetch.FactsFetcher;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.ExecutorService;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -38,11 +40,10 @@ import utils.HttpUtils;
 @Path("dog")
 public class DogResource {
 
+    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final ExecutorService threadPool = HttpUtils.getThreadPool();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    //private static  dogBreed = dogBreed..getZomatoFetcher(GSON, threadPool);
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    //private static final ZomatoFacade FACADE = ZomatoFacade.getZomatoFacade(EMF);
+    private static final DogFacade FACADE = DogFacade.getDogFacade(EMF);
 
     @Context
     private UriInfo context;
@@ -93,11 +94,12 @@ public class DogResource {
         return GSON.toJson(BreedFetcher.getBreedByName(breed));
 
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{breed}")
     public String getDog(@PathParam("breed") String breed) throws IOException, MalformedURLException, ParseException {
-        DogFacade df = new DogFacade();
-        return GSON.toJson(df.getDog(breed));
+
+        return GSON.toJson(FACADE.getDog(breed));
     }
 }
