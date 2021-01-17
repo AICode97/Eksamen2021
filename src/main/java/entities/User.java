@@ -59,6 +59,8 @@ public class User implements Serializable {
     @OneToMany
     private List<Dog> dogList = new ArrayList<>();
     
+   
+    
     
 
     public List<String> getRolesAsStrings() {
@@ -84,8 +86,16 @@ public class User implements Serializable {
         this.userName = userName;
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
         this.email = email;
+      
     }
-    
+
+    public List<Dog> getDogList() {
+        return dogList;
+    }
+
+    public void setDogList(List<Dog> dogList) {
+        this.dogList = dogList;
+    }
     
     
     

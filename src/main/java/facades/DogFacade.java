@@ -12,6 +12,7 @@ import com.nimbusds.jose.shaded.json.parser.ParseException;
 import dto.BreedDTO;
 import entities.Dog;
 import entities.Searches;
+import entities.User;
 import fetch.BreedFetcher;
 import fetch.BreedImageFetcher;
 import fetch.FactsFetcher;
@@ -77,14 +78,20 @@ public class DogFacade {
 
     }
 
-    public Dog addDog(String name, String dateOfBirth, String info, String breed) {
+    public Dog addDog(String name, String dateOfBirth, String info, String breed, String activeUser) {
         EntityManager em = emf.createEntityManager();
         Dog dog;
+        
         try {
-            dog = new Dog(name, dateOfBirth, info, breed);
-            //dog.addUser(em.find(User.class, "user"));
             em.getTransaction().begin();
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.userName =:name", User.class)
+            .setParameter("name", activeUser);    
+            User owner = query.getSingleResult();
+            dog = new Dog(name, dateOfBirth, info, breed);
+            owner.getDogList().add(dog);
+            
             em.persist(dog);
+            em.merge(owner);
             em.getTransaction().commit();
 
         } finally {

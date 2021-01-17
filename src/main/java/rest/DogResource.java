@@ -74,17 +74,19 @@ public class DogResource {
         String dateOfBirth;
         String info;
         String breed;
+        String activeUser;
         try {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             name = json.get("name").getAsString();
             dateOfBirth = json.get("dob").getAsString();
             info = json.get("info").getAsString();
             breed = json.get("breed").getAsString();
+            activeUser = json.get("activeUser").getAsString();
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
-        Dog dog = FACADE.addDog(name, dateOfBirth, info, breed);
+        Dog dog = FACADE.addDog(name, dateOfBirth, info, breed, activeUser);
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("name", name);
         responseJson.addProperty("msg", "Welcome on board!");
