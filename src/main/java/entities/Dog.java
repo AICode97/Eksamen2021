@@ -20,12 +20,16 @@ public class Dog implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String dateOfBirth;
     private String info;
     private String breed;
+
+   
+    
+    
 
     public Dog(Long id, String name, String dateOfBirth, String info, String breed) {
         this.id = id;
