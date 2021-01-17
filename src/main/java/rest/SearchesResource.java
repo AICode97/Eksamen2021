@@ -55,4 +55,12 @@ public class SearchesResource {
 
         return GSON.toJson(FACADE.getSearches(breed));
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/all")
+    public String getDog() throws IOException, MalformedURLException, ParseException {
+
+        return GSON.toJson(FACADE.getAllSearches());
+    }
 }

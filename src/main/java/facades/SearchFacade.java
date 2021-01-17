@@ -46,12 +46,12 @@ public class SearchFacade {
 
     public Long getSearches(String breed) {
       EntityManager em = emf.createEntityManager();
-      Long list = null; 
+      Long result = null; 
       try{
           em.getTransaction().begin();
           Query query = em.createQuery("SELECT COUNT(s) FROM Searches s WHERE s.breedName =:breed", Searches.class)
           .setParameter("breed", breed);
-          list = (Long) query.getSingleResult();
+          result = (Long) query.getSingleResult();
           em.getTransaction().commit();
           
       }finally{
@@ -60,7 +60,25 @@ public class SearchFacade {
       
          
         
-        return list;
+        return result;
     }
+    public Long getAllSearches() {
+      EntityManager em = emf.createEntityManager();
+      Long result = null; 
+      try{
+          em.getTransaction().begin();
+          Query query = em.createQuery("SELECT COUNT(s) FROM Searches s", Searches.class);
+          result = (Long) query.getSingleResult();
+          em.getTransaction().commit();
+          
+      }finally{
+          em.close();
+      }
+      
+         
+        
+        return result;
+    }
+
 
 }
