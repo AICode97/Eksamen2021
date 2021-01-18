@@ -100,4 +100,20 @@ public class DogFacade {
         return dog;
 
     }
+   
+    public List<User> getDogsByPerson(String activeUser){
+        EntityManager em = emf.createEntityManager();
+        List<User> list = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+      
+            TypedQuery<User> query2 = em.createQuery("SELECT u.dogList FROM User u WHERE u.userName =:name", User.class).setParameter("name", activeUser);
+            list = query2.getResultList();
+            
+        
+        } finally {
+            em.close();
+        }
+        return list;
+    }
 }

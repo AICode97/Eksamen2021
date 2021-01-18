@@ -6,6 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,39 +28,40 @@ public class Searches implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+   
+
     
-    Date dateTime;
-    String breedName;
+   String date;
+       String breedName;
 
     public Searches() {
     }
 
+       
+       
     public Searches(String breedName) {
-      
-        dateTime = new Date();
-        this.breedName = breedName;
+     this.breedName = breedName;
+    date = LocalDate.now().toString(); 
+        
     }
 
-    public Date getDate() {
-        return dateTime;
+    public String getDate() {
+        return date;
     }
 
     public void setDate(String date) {
-        this.dateTime = new Date();
+        this.date = date;
     }
 
-    public String getName() {
+    public String getBreedName() {
         return breedName;
     }
 
-    public void setName(String breedName) {
+    public void setBreedName(String breedName) {
         this.breedName = breedName;
     }
     
-    
-    
-    
-
     public Long getId() {
         return id;
     }
@@ -65,5 +70,4 @@ public class Searches implements Serializable {
         this.id = id;
     }
 
-   
 }

@@ -7,8 +7,11 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import entities.Searches;
+import java.util.ArrayList;
 import static java.util.Collections.list;
+import java.util.HashMap;
 import java.util.List;
 
 import java.util.concurrent.ExecutorService;
@@ -62,6 +65,8 @@ public class SearchFacade {
         
         return result;
     }
+    
+    
     public Long getAllSearches() {
       EntityManager em = emf.createEntityManager();
       Long result = null; 
@@ -79,6 +84,25 @@ public class SearchFacade {
         
         return result;
     }
-
+    
+    public List<HashMap> getAllDogSearches() {
+        EntityManager em = emf.createEntityManager();
+        List<HashMap> grandList = new ArrayList();
+        try{
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT  distinct(s.breedName) FROM Searches s", Searches.class);
+            List<String> response = query.getResultList();
+            for(String s : response){
+                HashMap newMap = new HashMap();
+                long result = getSearches(s);
+                newMap.put("breed", s);
+                newMap.put("value", result);
+                grandList.add(newMap);
+            }
+        }finally{
+            em.close();
+        }
+        return grandList;
+    }
 
 }

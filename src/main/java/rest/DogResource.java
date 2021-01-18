@@ -129,18 +129,18 @@ public class DogResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/breeds{breed}")
-    public String getBreed(@PathParam("breed") String breed) throws IOException, MalformedURLException, ParseException {
-
-        return GSON.toJson(BreedFetcher.getBreedByName(breed));
-
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{breed}")
     public String getDog(@PathParam("breed") String breed) throws IOException, MalformedURLException, ParseException {
 
         return GSON.toJson(FACADE.getDog(breed));
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/mydog/{activeUser}")
+    public String getMyDog(@PathParam("activeUser") String activeUser) throws IOException, MalformedURLException, ParseException{
+        
+        
+        return GSON.toJson(FACADE.getDogsByPerson(activeUser));
     }
 }
