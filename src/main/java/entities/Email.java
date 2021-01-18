@@ -14,10 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/**
- *
- * @author lassebirk
- */
 @Entity
 public class Email implements Serializable {
 
